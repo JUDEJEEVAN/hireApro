@@ -23,20 +23,18 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
-const player_routes = require('./routes/players.routes')
-const skill_range_routes = require('./routes/skill_range.routes')
-const official_routes = require('./routes/officials.routes')
-const club_routes = require('./routes/clubs.routes')
-const email_templates = require('./routes/mails.routes')
-const otp_routes = require('./routes/otp.routes')
+const category_routes = require('./routes/categories.routes')
+const interaction_routes = require('./routes/interactions.routes')
+const project_routes = require('./routes/projects.routes')
+const user_routes = require('./routes/users.routes')
+const worker_routes = require('./routes/workers.routes')
 
 // routes
-app.use('/api/players', player_routes)
-app.use('/api/skill-ranges', skill_range_routes)
-app.use('/api/officials', official_routes)
-app.use('/api/clubs', club_routes)
-app.use('/api/email-templates', email_templates)
-app.use('/api/otp', otp_routes)
+app.use('/api/categories', category_routes)
+app.use('/api/interactions', interaction_routes)
+app.use('/api/projects', project_routes)
+app.use('/api/users', user_routes)
+app.use('/api/workers', worker_routes)
 
 // this code listens in the port specified 
 app.listen(port, () => {
