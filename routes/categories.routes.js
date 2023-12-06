@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
 const Category = require('../models/category')
 
 const router = express.Router()
@@ -25,8 +26,8 @@ router.post('/', async (req, res) => {
 
     console.log(new Date(), 'request incoming to - category', req.route.stack[0].method, req.route.path)
 
-    const exist = Category.findOne({ name: req.body.name })
-    if (exist) return res.status(409).json({ message: 'category already exists' })
+    // const exist = Category.findOne({ name: req.body.name })
+    // if (exist) return res.status(409).json({ message: 'category already exists' })
 
     const category = await Category.create({
         name: req.body.name,
@@ -46,19 +47,11 @@ router.patch('/', async (req, res) => {
     const id = req.body.id
     const data = req.body
 
-    try {
+    const category = await Category.findByIdAndUpdate(id, data, {
+        new: true
+    })
 
-        const category = await Category.findByIdAndUpdate(id, data, {
-            new: true
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({ message: 'update failed', error: error })
-
-    }
-
-    if (category) return res.status(200).json({ message: 'successfully updated!' })
+    if (category) { return res.status(200).json({ message: 'successfully updated!' }) } else { return res.status(500).json({ message: 'update failed', error: error }) }
 
 })
 

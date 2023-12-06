@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
 const Interaction = require('../models/interaction')
 
 const router = express.Router()
@@ -39,12 +40,13 @@ router.post('/', async (req, res) => {
 
     console.log(new Date(), 'request incoming to - interaction', req.route.stack[0].method, req.route.path)
 
-    const exist = Interaction.findOne({ name: req.body.name })
-    if (exist) return res.status(409).json({ message: 'interaction already exists' })
+    // const exist = Interaction.findOne({ name: req.body.name })
+    // if (exist) return res.status(409).json({ message: 'interaction already exists' })
 
     const interaction = await Interaction.create({
-        name: req.body.name,
-        description: req.body.description,
+        user: req.body.user,
+        worker: req.body.worker,
+        status: req.body.status
     })
 
     if (interaction) return res.status(201).json({ message: 'successfully created the interaction' })
@@ -61,19 +63,15 @@ router.patch('/', async (req, res) => {
     const id = req.body.id
     const data = req.body
 
-    try {
+    const interaction = await Interaction.findByIdAndUpdate(id, data, {
+        new: true
+    })
 
-        const interaction = await Interaction.findByIdAndUpdate(id, data, {
-            new: true
-        })
-
-    } catch (error) {
-
+    if (interaction) {
+        return res.status(200).json({ message: 'successfully updated!' })
+    } else {
         return res.status(500).json({ message: 'update failed', error: error })
-
     }
-
-    if (interaction) return res.status(200).json({ message: 'successfully updated!' })
 
 })
 

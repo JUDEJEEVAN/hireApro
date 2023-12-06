@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
 const Project = require('../models/project')
 
 const router = express.Router()
@@ -37,12 +38,14 @@ router.post('/', async (req, res) => {
 
     console.log(new Date(), 'request incoming to - project', req.route.stack[0].method, req.route.path)
 
-    const exist = Project.findOne({ name: req.body.name })
-    if (exist) return res.status(409).json({ message: 'project already exists' })
+    // const exist = Project.findOne({ name: req.body.name })
+    // if (exist) return res.status(409).json({ message: 'project already exists' })
 
     const project = await Project.create({
-        name: req.body.name,
+        worker: req.body.worker,
+        title: req.body.title,
         description: req.body.description,
+        client: req.body.client,
     })
 
     if (project) return res.status(201).json({ message: 'successfully created the project' })

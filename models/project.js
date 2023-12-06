@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const ProjectSchema = new Schema({
     worker: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Worker',
         required: true,
     },
     title: {
@@ -15,6 +15,11 @@ const ProjectSchema = new Schema({
     description: {
         type: String,
         required: true,
+    },
+    client: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, 
 {
